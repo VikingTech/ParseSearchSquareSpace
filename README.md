@@ -1,4 +1,5 @@
 ParseSearchSquareSpace
 ======================
 
-create a parse search code on square space
+create a parse search box code on square space
+
