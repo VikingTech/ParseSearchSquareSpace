@@ -62,7 +62,7 @@ searchString();
         }
     }
     function getResult(strString){
-        var Parts = Parse.Object.extend("Your Class Name HERE");
+        var YourClassNameHere = Parse.Object.extend("Your Class Name HERE");
         var query = new Parse.Query(Your Class Name HERE);
 //the field I want to be able to search is the description column on my parse data base so Description goes below
         query.contains("Description", strString);
