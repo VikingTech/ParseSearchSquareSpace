@@ -1,0 +1,99 @@
+//this code will go in a code box on your page.  this is done by simply creating a code box on your page and inserting this code as HTML and inserting your on information
+
+         <form id="formoid" action="the is your homepage URL">
+          <input style="width: 20%;
+padding: 12px;
+margin: 6px 0px 4px;
+border: 1px solid #CCC;
+background: none repeat scroll 0% 0% #FAFAFA;
+font-family: sans-serif;
+font-size: 12px;
+line-height: normal;
+box-sizing: border-box;
+border-radius: 2px;"type="text" id="searchText" value=""/>
+          <input style="display: inline-block;
+    width: auto;
+    height: auto;
+    padding: 1em 2.5em;
+    color: #FFF;
+    background-color: #272727;
+    border-width: 0px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 1em;
+    font-weight: normal;
+    font-style: normal;
+    letter-spacing: 0px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    outline: medium none;
+    -moz-appearance: none;
+    font-size: 14px;
+    text-transform: none;" type="submit" value="SEARCH"></input>
+          <div class="found"></div>
+          <div class="clearfix" style="margin-bottom: 5px"></div>
+          <table id="table1" border='1'>
+            <tr>
+ //my code is for a store so I will be displaying the Item Description, The Price, and the Part number each of these are also columns from my Parse database
+              <th>Description</th>
+              <th>Sell Price</th>
+              <th>Part Number</th>
+            </tr>
+             <tbody class="wrapperss">
+
+             </tbody>
+          </table>
+
+      </form>
+
+
+<script type="text/javascript" src="js/jquery-2.1.0.js"></script>
+  <script type="text/javascript" src="js/parse-1.2.18.js"></script>
+
+  <script type="text/javascript">
+    $("#formoid").submit(function(event) {
+      event.preventDefault();
+      Parse.initialize("your Application key", "your Javascript key");
+searchString();
+    function searchString(){
+        var strString = $("#searchText").val();
+        if(strString != ""){
+            getResult(strString.toUpperCase());
+        }
+    }
+    function getResult(strString){
+        var Parts = Parse.Object.extend("Parts");
+        var query = new Parse.Query(Parts);
+//the field I want to be able to search is the description column on my parse data base so Description goes below
+        query.contains("Description", strString);
+      //query.limit(10);
+
+        query.find({
+            success: function(results) {              				
+                    populateTable(results);
+
+            },
+            error: function(error) {
+                alert("Error: " + error.code + " " + error.message);
+            }
+        });
+    }
+
+    function populateTable(result){
+        //$(".found").html("Total found: " +result.length);
+        var tbody = "";
+        for (var i = 0; i < result.length; i++) {
+            tbody += "<tr>";
+            var object = result[i];
+//These are what results are being pulled from my parse database you may notice that parse doesn't like spaces in Column names so ListPrice instead of List Price
+            tbody += "<td>" + object.get('Description') + "</td>";
+            tbody += "<td>" + object.get('ListPrice') + "</td>";
+            tbody += "<td>" + object.get('PartNumber') + "</td>";
+            tbody += "</tr><br />";
+
+        }
+
+        $('.wrapperss').html(tbody);
+    }
+   });
+  </script>
